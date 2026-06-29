@@ -1,0 +1,55 @@
+const http = require('http');
+const next = require('next');
+
+const host = '0.0.0.0';
+const primaryPort = Number(process.env.PORT || 3000);
+const fallbackPorts = [3000, 8080].filter((port) => port !== primaryPort);
+
+const app = next({ dev: false, hostname: host, port: primaryPort });
+const handle = app.getRequestHandler();
+
+function startFallbackProxy(port) {
+  const proxy = http.createServer((incoming, outgoing) => {
+    const request = http.request(
+      {
+        host: '127.0.0.1',
+        port: primaryPort,
+        method: incoming.method,
+        path: incoming.url,
+        headers: incoming.headers
+      },
+      (response) => {
+        outgoing.writeHead(response.statusCode || 500, response.headers);
+        response.pipe(outgoing);
+      }
+    );
+
+    request.on('error', () => {
+      outgoing.statusCode = 502;
+      outgoing.end('Upstream unavailable');
+    });
+
+    incoming.pipe(request);
+  });
+
+  proxy.on('error', (error) => {
+    if (error.code !== 'EADDRINUSE') {
+      console.error(`Fallback proxy failed on ${port}`, error);
+    }
+  });
+
+  proxy.listen(port, host, () => {
+    console.log(`Fallback proxy ready on http://${host}:${port}`);
+  });
+}
+
+app.prepare().then(() => {
+  const server = http.createServer((request, response) => {
+    handle(request, response);
+  });
+
+  server.listen(primaryPort, host, () => {
+    console.log(`Next server ready on http://${host}:${primaryPort}`);
+    fallbackPorts.forEach(startFallbackProxy);
+  });
+});
