@@ -16,6 +16,7 @@ const navGroups = [
     items: [
       ['Booking Command Center', '/app/bookings'],
       ['Smart Booking Terminal', '/app/bookings/new'],
+      ['Quotes', '/app/quotes'],
       ['Dispatch Command Center', '/app/dispatch'],
       ['Workforce Command Center', '/app/workforce'],
       ['Internal Chat', '/app/internal-chat']
