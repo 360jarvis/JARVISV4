@@ -7,8 +7,27 @@ const fallbackPorts = [80, 3000, 8080].filter((port) => port !== primaryPort);
 const app = next({ dev: false, port: primaryPort });
 const handle = app.getRequestHandler();
 
+function listenOn(server, port, host, label, options = {}) {
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE' || error.code === 'EACCES') {
+      console.warn(`${label} skipped on ${host}:${port}: ${error.code}`);
+    } else {
+      console.error(`${label} failed on ${host}:${port}`, error);
+    }
+  });
+
+  server.listen({ port, host, ...options }, () => {
+    console.log(`${label} ready on ${host}:${port}`);
+  });
+}
+
+function listenOnBothFamilies(createServer, port, label) {
+  listenOn(createServer(), port, '0.0.0.0', `${label} IPv4`);
+  listenOn(createServer(), port, '::', `${label} IPv6`, { ipv6Only: true });
+}
+
 function startFallbackProxy(port) {
-  const proxy = http.createServer((incoming, outgoing) => {
+  listenOnBothFamilies(() => http.createServer((incoming, outgoing) => {
     const request = http.request(
       {
         host: '127.0.0.1',
@@ -29,28 +48,13 @@ function startFallbackProxy(port) {
     });
 
     incoming.pipe(request);
-  });
-
-  proxy.on('error', (error) => {
-    if (error.code === 'EADDRINUSE' || error.code === 'EACCES') {
-      console.warn(`Fallback proxy skipped on ${port}: ${error.code}`);
-    } else {
-      console.error(`Fallback proxy failed on ${port}`, error);
-    }
-  });
-
-  proxy.listen(port, () => {
-    console.log(`Fallback proxy ready on port ${port}`);
-  });
+  }), port, 'Fallback proxy');
 }
 
 app.prepare().then(() => {
-  const server = http.createServer((request, response) => {
+  listenOnBothFamilies(() => http.createServer((request, response) => {
     handle(request, response);
-  });
+  }), primaryPort, 'Next server');
 
-  server.listen(primaryPort, () => {
-    console.log(`Next server ready on port ${primaryPort}`);
-    fallbackPorts.forEach(startFallbackProxy);
-  });
+  fallbackPorts.forEach(startFallbackProxy);
 });
