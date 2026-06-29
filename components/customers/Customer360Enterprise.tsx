@@ -2,6 +2,13 @@ import type { CustomerRecord } from '../../lib/customers';
 
 const quickActions = ['Call', 'Text', 'Email', 'Book', 'Quote', 'Note'];
 
+const timeline = [
+  { type: 'Booking', title: 'Deep Cleaning completed', detail: 'Arrival Window 8:00 AM - 10:00 AM · Team assigned', date: '06/18/2026' },
+  { type: 'Payment', title: 'Payment recorded', detail: 'Card payment matched to latest cleaning', date: '06/18/2026' },
+  { type: 'Quote', title: 'Recurring service offer sent', detail: 'Bi-weekly service recommendation prepared', date: '06/12/2026' },
+  { type: 'Note', title: 'Customer preference updated', detail: 'Prefers same team and morning arrival window', date: '06/10/2026' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -57,6 +64,30 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
         <Panel title="Customer Health" value={isPastDue ? 'Needs Attention' : 'Healthy'} detail="Payment, service, quality, and recurring status summarized here." />
         <Panel title="Property Intelligence" value={`${customer.propertyType} · ${customer.city} ${customer.zip}`} detail="Property details, access notes, supplies, pets, parking, and preferred team come next." />
         <Panel title="Communication Preference" value="Text + Email" detail="Future communication history and consent tracking will live here." />
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Customer Timeline</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Unified customer activity</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Bookings, quotes, payments, notes, reviews, documents, calls, SMS, and emails will live here.</p>
+          </div>
+          <button className="lux-button secondary" type="button">Add Note</button>
+        </div>
+
+        <div style={{ display: 'grid', gap: 10, marginTop: 16 }}>
+          {timeline.map((item) => (
+            <article key={item.title} style={{ display: 'grid', gridTemplateColumns: '90px 1fr auto', gap: 14, alignItems: 'center', border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <Tag tone="gold">{item.type}</Tag>
+              <div>
+                <strong style={{ display: 'block', fontSize: 14 }}>{item.title}</strong>
+                <span style={{ display: 'block', marginTop: 5, color: 'var(--jarvixx-muted)', fontSize: 13 }}>{item.detail}</span>
+              </div>
+              <span style={{ color: 'var(--jarvixx-muted)', fontSize: 12 }}>{item.date}</span>
+            </article>
+          ))}
+        </div>
       </section>
     </div>
   );
