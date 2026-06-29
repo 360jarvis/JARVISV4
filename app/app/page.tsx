@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AppShell from '../../components/AppShell';
+import EnterpriseWidget from '../../components/dashboard/EnterpriseWidget';
 import { ArrivalWindowCard, DEFAULT_ARRIVAL_WINDOWS } from '../../components/scheduling/ArrivalWindows';
 
 const kpis = [
@@ -91,8 +92,7 @@ export default function AppDashboardPage() {
         </section>
 
         <section style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr 0.72fr', gap: 18, alignItems: 'stretch' }}>
-          <article className="lux-card" style={{ padding: 18 }}>
-            <div style={{ marginBottom: 14 }}><h2 style={{ margin: 0, fontSize: 16 }}>Today’s Operations Priorities</h2><p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 12 }}>Fast access to urgent operational work.</p></div>
+          <EnterpriseWidget title="Today’s Operations Priorities" subtitle="Fast access to urgent operational work." size="large">
             <div style={{ display: 'grid', gap: 9 }}>
               {priorities.map((item) => (
                 <a key={item.label} href="/app/dispatch" style={{ display: 'grid', gridTemplateColumns: '34px 1fr auto', gap: 12, alignItems: 'center', padding: 12, border: '1px solid var(--jarvixx-border)', borderRadius: 14, color: 'inherit', background: '#fff' }}>
@@ -103,51 +103,46 @@ export default function AppDashboardPage() {
               ))}
             </div>
             <a href="/app/dispatch" style={{ marginTop: 12, display: 'flex', justifyContent: 'center', padding: 12, border: '1px solid var(--jarvixx-border)', borderRadius: 14, color: 'var(--jarvixx-ink)', fontWeight: 800 }}>View All Priorities ›</a>
-          </article>
+          </EnterpriseWidget>
 
-          <article style={{ borderRadius: 22, padding: 18, background: 'linear-gradient(180deg, #090806 0%, #15130f 100%)', color: '#fff', boxShadow: '0 24px 70px rgba(0,0,0,0.18)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 15 }}><div><h2 style={{ margin: 0, fontSize: 16 }}>Today’s Arrival Windows</h2><p style={{ margin: '6px 0 0', color: '#b9ae98', fontSize: 12 }}>Default scheduling model</p></div><span style={{ border: '1px solid rgba(34,197,94,0.35)', color: '#86efac', borderRadius: 999, padding: '6px 10px', height: 28, fontSize: 12 }}>● Live</span></div>
+          <EnterpriseWidget title="Today’s Arrival Windows" subtitle="Default scheduling model" size="large" tone="dark">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
               {DEFAULT_ARRIVAL_WINDOWS.map((window) => <ArrivalWindowCard key={window.id} window={window} />)}
             </div>
             <a href="/app/dispatch" style={{ marginTop: 14, display: 'flex', justifyContent: 'space-between', padding: 13, borderRadius: 12, background: 'linear-gradient(135deg, #d8bd7f, #a9822b)', color: '#111', fontWeight: 800 }}>Open Dispatch by Arrival Window <span>›</span></a>
-          </article>
+          </EnterpriseWidget>
 
-          <article className="lux-card" style={{ padding: 18 }}>
-            <h2 style={{ margin: 0, fontSize: 16 }}>Quick Actions</h2><p style={{ margin: '6px 0 14px', color: 'var(--jarvixx-muted)', fontSize: 12 }}>Common command center shortcuts.</p>
+          <EnterpriseWidget title="Quick Actions" subtitle="Common command center shortcuts." size="large">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
               {quickActions.map((action) => (
                 <a key={action.label} href={action.href} style={{ minHeight: 86, border: '1px solid var(--jarvixx-border)', borderRadius: 15, background: '#fff', color: 'var(--jarvixx-ink)', display: 'grid', placeItems: 'center', textAlign: 'center', fontWeight: 800, fontSize: 12 }}><span style={{ fontSize: 23 }}>{action.icon}</span><span>{action.label}</span></a>
               ))}
             </div>
             <button style={{ width: '100%', marginTop: 12, border: '1px solid var(--jarvixx-border)', borderRadius: 14, background: '#fbfaf7', padding: 12, fontWeight: 800 }}>Customize Actions</button>
-          </article>
+          </EnterpriseWidget>
         </section>
 
         <section style={{ display: 'grid', gridTemplateColumns: '0.88fr 0.88fr 1fr', gap: 18, alignItems: 'stretch' }}>
-          <article className="lux-card" style={{ padding: 18 }}>
-            <h2 style={{ margin: 0, fontSize: 16 }}>Executive Activity Feed</h2>
-            <div style={{ display: 'grid', gap: 9, marginTop: 14 }}>
+          <EnterpriseWidget title="Executive Activity Feed" size="medium">
+            <div style={{ display: 'grid', gap: 9 }}>
               {activity.map((item) => (
                 <div key={item.label} style={{ display: 'grid', gridTemplateColumns: '34px 1fr auto', gap: 10, padding: 11, border: '1px solid var(--jarvixx-border)', borderRadius: 14, alignItems: 'center' }}><span style={{ width: 31, height: 31, borderRadius: 12, display: 'grid', placeItems: 'center', background: item.color, fontWeight: 800 }}>JX</span><span><strong style={{ display: 'block', fontSize: 13 }}>{item.label}</strong><span style={{ color: 'var(--jarvixx-muted)', fontSize: 12 }}>{item.detail}</span></span><span style={{ color: 'var(--jarvixx-muted)', fontSize: 11 }}>{item.time}</span></div>
               ))}
             </div>
             <a href="/app/reports" style={{ marginTop: 12, display: 'flex', justifyContent: 'center', padding: 12, border: '1px solid var(--jarvixx-border)', borderRadius: 14, color: 'var(--jarvixx-ink)', fontWeight: 800 }}>View All Activity ›</a>
-          </article>
+          </EnterpriseWidget>
 
-          <article className="lux-card" style={{ padding: 18 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}><div><h2 style={{ margin: 0, fontSize: 16 }}>Revenue Snapshot</h2><p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 12 }}>This week</p></div><strong style={{ color: '#16a34a' }}>+18.6%</strong></div>
-            <div style={{ fontSize: 28, fontWeight: 800, marginTop: 16 }}>$12,547.00</div>
+          <EnterpriseWidget title="Revenue Snapshot" subtitle="This week" size="medium">
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}><div style={{ fontSize: 28, fontWeight: 800 }}>$12,547.00</div><strong style={{ color: '#16a34a' }}>+18.6%</strong></div>
             <div style={{ marginTop: 20, height: 150, borderRadius: 16, background: 'linear-gradient(180deg, rgba(216,189,127,0.24), rgba(216,189,127,0.04))', border: '1px solid var(--jarvixx-border)', display: 'grid', placeItems: 'center', color: 'var(--jarvixx-muted)', fontWeight: 700 }}>Revenue chart placeholder</div>
-          </article>
+          </EnterpriseWidget>
 
-          <article className="lux-card" style={{ padding: 18 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}><div><h2 style={{ margin: 0, fontSize: 16 }}>Growth Snapshot</h2><p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 12 }}>This month</p></div><strong>37 Leads</strong></div>
-            <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: 20, alignItems: 'center', marginTop: 18 }}>
+          <EnterpriseWidget title="Growth Snapshot" subtitle="This month" size="medium">
+            <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: 20, alignItems: 'center' }}>
               <div style={{ width: 150, height: 150, borderRadius: '50%', background: 'conic-gradient(#5abf90 0 49%, #80a7e8 49% 73%, #8b6ee8 73% 89%, #d8bd7f 89% 100%)', display: 'grid', placeItems: 'center' }}><div style={{ width: 92, height: 92, borderRadius: '50%', background: '#fff', display: 'grid', placeItems: 'center', textAlign: 'center', fontWeight: 800 }}>Total<br />37</div></div>
               <div style={{ display: 'grid', gap: 10, fontSize: 13 }}>{['New Leads 18', 'Contacted 9', 'Quoted 6', 'Booked 4'].map((row) => <div key={row} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--jarvixx-border)', paddingBottom: 8 }}><span>{row}</span><strong>●</strong></div>)}</div>
             </div>
-          </article>
+          </EnterpriseWidget>
         </section>
 
         <section style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr)) auto', gap: 14, alignItems: 'center', background: 'linear-gradient(180deg, #090806, #15130f)', color: '#fff', borderRadius: 22, padding: 18, boxShadow: '0 24px 70px rgba(0,0,0,0.18)' }}>
