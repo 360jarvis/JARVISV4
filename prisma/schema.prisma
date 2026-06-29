@@ -1,0 +1,244 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TenantStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  LOCKED
+  CANCELED
+}
+
+enum PlanName {
+  STARTER
+  GROWTH
+  PREMIUM
+  PLATFORM
+}
+
+enum CustomerStatus {
+  LEAD
+  ACTIVE
+  RECURRING
+  VIP
+  PAST_DUE
+  BLACKLISTED
+  ARCHIVED
+}
+
+enum BookingStatus {
+  DRAFT
+  SCHEDULED
+  ASSIGNED
+  CONFIRMED
+  COMPLETED
+  CANCELED
+  RESCHEDULED
+  PAYMENT_FAILED
+  NEEDS_REVIEW
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  VIEWED
+  FOLLOW_UP
+  NEGOTIATING
+  WON
+  LOST
+  EXPIRED
+  CONVERTED
+}
+
+enum PaymentState {
+  NOT_REQUIRED
+  PENDING
+  HOLD_ACTIVE
+  PRE_CHARGE
+  CAPTURED
+  FAILED
+  REFUNDED
+  DISPUTED
+  VOID
+}
+
+model Tenant {
+  id        String       @id @default(cuid())
+  name      String
+  slug      String       @unique
+  plan      PlanName     @default(STARTER)
+  status    TenantStatus @default(TRIAL)
+  timezone  String       @default("America/Chicago")
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  customers Customer[]
+  bookings  Booking[]
+  quotes    Quote[]
+  payments  PaymentTransaction[]
+  audits    AuditLog[]
+  timeline  TimelineEvent[]
+}
+
+model Customer {
+  id        String         @id @default(cuid())
+  tenantId  String
+  tenant    Tenant         @relation(fields: [tenantId], references: [id])
+  name      String
+  company   String?
+  email     String?
+  phone     String?
+  status    CustomerStatus @default(LEAD)
+  language  String         @default("en")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  deletedAt DateTime?
+
+  properties Property[]
+  bookings   Booking[]
+  quotes     Quote[]
+  payments   PaymentTransaction[]
+  timeline   TimelineEvent[]
+
+  @@index([tenantId])
+  @@index([email])
+  @@index([phone])
+}
+
+model Property {
+  id           String   @id @default(cuid())
+  tenantId     String
+  customerId   String
+  customer     Customer @relation(fields: [customerId], references: [id])
+  type         String   @default("Residential")
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  state        String
+  zip          String
+  accessNotes  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  bookings Booking[]
+  quotes   Quote[]
+
+  @@index([tenantId])
+  @@index([customerId])
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  tenantId      String
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  customerId    String
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  propertyId    String?
+  property      Property?     @relation(fields: [propertyId], references: [id])
+  quoteId       String?
+  bookingNumber String
+  status        BookingStatus @default(DRAFT)
+  serviceType   String
+  frequency     String        @default("One Time")
+  serviceDate   DateTime?
+  arrivalWindow String?
+  totalCents    Int           @default(0)
+  paymentState  PaymentState  @default(NOT_REQUIRED)
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  payments PaymentTransaction[]
+  timeline TimelineEvent[]
+
+  @@unique([tenantId, bookingNumber])
+  @@index([tenantId])
+  @@index([customerId])
+}
+
+model Quote {
+  id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id])
+  customerId    String
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  propertyId    String?
+  property      Property?   @relation(fields: [propertyId], references: [id])
+  quoteNumber   String
+  status        QuoteStatus @default(DRAFT)
+  serviceType   String
+  selectedCents Int         @default(0)
+  expiresAt     DateTime?
+  bookingId     String?
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  timeline TimelineEvent[]
+
+  @@unique([tenantId, quoteNumber])
+  @@index([tenantId])
+  @@index([customerId])
+}
+
+model PaymentTransaction {
+  id          String       @id @default(cuid())
+  tenantId    String
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  customerId  String?
+  customer    Customer?    @relation(fields: [customerId], references: [id])
+  bookingId   String?
+  booking     Booking?     @relation(fields: [bookingId], references: [id])
+  processor   String
+  state       PaymentState @default(PENDING)
+  amountCents Int
+  currency    String       @default("USD")
+  memo        String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([tenantId])
+  @@index([customerId])
+  @@index([bookingId])
+}
+
+model TimelineEvent {
+  id           String   @id @default(cuid())
+  tenantId     String
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  customerId   String?
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  bookingId    String?
+  booking      Booking? @relation(fields: [bookingId], references: [id])
+  quoteId      String?
+  quote        Quote?   @relation(fields: [quoteId], references: [id])
+  title        String
+  body         String?
+  eventType    String
+  sourceModule String
+  createdAt    DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([customerId])
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  tenantId     String?
+  tenant       Tenant?  @relation(fields: [tenantId], references: [id])
+  action       String
+  entityType   String
+  entityId     String
+  beforeJson   Json?
+  afterJson    Json?
+  sourceModule String
+  createdAt    DateTime @default(now())
+
+  @@index([tenantId])
+}
