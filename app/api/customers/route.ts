@@ -1,4 +1,5 @@
-import { apiNotReady, apiOk } from '../../../lib/apiResponse';
+import { apiFail, apiNotReady, apiOk } from '../../../lib/apiResponse';
+import { mockCustomerRepository } from '../../../lib/mockRepositories';
 import { getRequestContext } from '../../../lib/requestContext';
 
 export async function GET(request: Request) {
@@ -8,8 +9,15 @@ export async function GET(request: Request) {
     return apiNotReady('Customers');
   }
 
-  return apiOk([], {
+  const result = await mockCustomerRepository.list({ tenantId: context.tenantId, limit: 25, offset: 0 });
+
+  if (!result.ok) {
+    return apiFail('CUSTOMERS_LIST_FAILED', result.error || 'Unable to load customers.', 500);
+  }
+
+  return apiOk(result.data || [], {
     tenantId: context.tenantId,
-    message: 'Customer API contract established. Live database integration is the next implementation step.'
+    source: 'mock-repository',
+    message: 'Repository contract wired. Replace mock repository with Prisma implementation when database is ready.'
   });
 }
