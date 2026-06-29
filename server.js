@@ -1,11 +1,10 @@
 const http = require('http');
 const next = require('next');
 
-const host = '0.0.0.0';
 const primaryPort = Number(process.env.PORT || 3000);
 const fallbackPorts = [80, 3000, 8080].filter((port) => port !== primaryPort);
 
-const app = next({ dev: false, hostname: host, port: primaryPort });
+const app = next({ dev: false, port: primaryPort });
 const handle = app.getRequestHandler();
 
 function startFallbackProxy(port) {
@@ -40,8 +39,8 @@ function startFallbackProxy(port) {
     }
   });
 
-  proxy.listen(port, host, () => {
-    console.log(`Fallback proxy ready on http://${host}:${port}`);
+  proxy.listen(port, () => {
+    console.log(`Fallback proxy ready on port ${port}`);
   });
 }
 
@@ -50,8 +49,8 @@ app.prepare().then(() => {
     handle(request, response);
   });
 
-  server.listen(primaryPort, host, () => {
-    console.log(`Next server ready on http://${host}:${primaryPort}`);
+  server.listen(primaryPort, () => {
+    console.log(`Next server ready on port ${primaryPort}`);
     fallbackPorts.forEach(startFallbackProxy);
   });
 });
