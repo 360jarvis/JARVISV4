@@ -1,6 +1,6 @@
 import AppShell from '../../../components/AppShell';
-import ModulePlaceholder from '../../../components/ModulePlaceholder';
+import FinancialCenter from '../../../components/FinancialCenter';
 
 export default function FinancialPage() {
-  return <AppShell title="Financial Command Center" subtitle="Revenue, open balances, payroll costs, inventory costs, refunds, credits, and QuickBooks-style reporting."><ModulePlaceholder name="Financial Command Center" /></AppShell>;
+  return <AppShell title="Financial Command Center" subtitle="Revenue, balances, refunds, credits, costs, and financial reporting."><FinancialCenter /></AppShell>;
 }
