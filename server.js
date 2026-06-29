@@ -2,7 +2,7 @@ const http = require('http');
 const next = require('next');
 
 const primaryPort = Number(process.env.PORT || 3000);
-const fallbackPorts = [80, 3000, 8080].filter((port) => port !== primaryPort);
+const fallbackPorts = [80, 3000, 8000, 8080].filter((port) => port !== primaryPort);
 
 const app = next({ dev: false, port: primaryPort });
 const handle = app.getRequestHandler();
