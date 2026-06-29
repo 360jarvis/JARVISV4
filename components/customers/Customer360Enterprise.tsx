@@ -9,6 +9,12 @@ const timeline = [
   { type: 'Note', title: 'Customer preference updated', detail: 'Prefers same team and morning arrival window', date: '06/10/2026' }
 ];
 
+const records = [
+  { title: 'Documents', value: '3', detail: 'Service agreement, access notes, signed authorization' },
+  { title: 'Reviews', value: '4.8', detail: 'Latest rating and customer experience history' },
+  { title: 'Payments', value: '$0.00', detail: 'Open balance, card status, receipts, and refunds' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -64,6 +70,12 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
         <Panel title="Customer Health" value={isPastDue ? 'Needs Attention' : 'Healthy'} detail="Payment, service, quality, and recurring status summarized here." />
         <Panel title="Property Intelligence" value={`${customer.propertyType} · ${customer.city} ${customer.zip}`} detail="Property details, access notes, supplies, pets, parking, and preferred team come next." />
         <Panel title="Communication Preference" value="Text + Email" detail="Future communication history and consent tracking will live here." />
+      </section>
+
+      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 14 }}>
+        {records.map((record) => (
+          <Panel key={record.title} title={record.title} value={record.value} detail={record.detail} />
+        ))}
       </section>
 
       <section className="lux-card" style={{ padding: 20 }}>
