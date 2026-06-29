@@ -3,7 +3,7 @@ const next = require('next');
 
 const host = '0.0.0.0';
 const primaryPort = Number(process.env.PORT || 3000);
-const fallbackPorts = [3000, 8080].filter((port) => port !== primaryPort);
+const fallbackPorts = [80, 3000, 8080].filter((port) => port !== primaryPort);
 
 const app = next({ dev: false, hostname: host, port: primaryPort });
 const handle = app.getRequestHandler();
@@ -33,7 +33,9 @@ function startFallbackProxy(port) {
   });
 
   proxy.on('error', (error) => {
-    if (error.code !== 'EADDRINUSE') {
+    if (error.code === 'EADDRINUSE' || error.code === 'EACCES') {
+      console.warn(`Fallback proxy skipped on ${port}: ${error.code}`);
+    } else {
       console.error(`Fallback proxy failed on ${port}`, error);
     }
   });
