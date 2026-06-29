@@ -1,6 +1,6 @@
 import Breadcrumbs from './Breadcrumbs';
 import CompanySwitcher from './CompanySwitcher';
-import GlobalSearch from './GlobalSearch';
+import GlobalCommandBar from './GlobalCommandBar';
 import NotificationCenter from './NotificationCenter';
 import QuickActions from './QuickActions';
 import UserProfileMenu from './UserProfileMenu';
@@ -32,7 +32,7 @@ export default function TopNavigation(props: { title: string; subtitle: string }
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
-          <GlobalSearch />
+          <GlobalCommandBar />
           <QuickActions />
         </div>
       </div>
