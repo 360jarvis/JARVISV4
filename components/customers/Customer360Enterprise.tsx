@@ -15,6 +15,13 @@ const records = [
   { title: 'Payments', value: '$0.00', detail: 'Open balance, card status, receipts, and refunds' }
 ];
 
+const recommendations = [
+  { title: 'Prepare recurring offer', detail: 'Customer may be a good fit for recurring service.', action: 'Prepare' },
+  { title: 'Confirm arrival window', detail: 'Use customer-facing arrival window language.', action: 'Confirm' },
+  { title: 'Review customer health', detail: 'Review service, balance, quality, and recurring status.', action: 'Review' },
+  { title: 'Prepare customer summary', detail: 'Create a quick office summary before contact.', action: 'Summarize' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -70,6 +77,21 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
         <Panel title="Customer Health" value={isPastDue ? 'Needs Attention' : 'Healthy'} detail="Payment, service, quality, and recurring status summarized here." />
         <Panel title="Property Intelligence" value={`${customer.propertyType} · ${customer.city} ${customer.zip}`} detail="Property details, access notes, supplies, pets, parking, and preferred team come next." />
         <Panel title="Communication Preference" value="Text + Email" detail="Future communication history and consent tracking will live here." />
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <p className="kicker" style={{ margin: 0 }}>Recommended Actions</p>
+        <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Next best steps</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 12, marginTop: 16 }}>
+          {recommendations.map((item) => (
+            <article key={item.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff', display: 'grid', gap: 10 }}>
+              <Tag tone="gold">JX</Tag>
+              <strong style={{ fontSize: 14 }}>{item.title}</strong>
+              <span style={{ color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.45 }}>{item.detail}</span>
+              <button className="lux-button secondary" type="button">{item.action}</button>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 14 }}>
