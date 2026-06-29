@@ -1,5 +1,4 @@
 import type { CustomerRecord } from '../../lib/customers';
-import { Badge } from '../ui';
 
 const quickActions = ['Call', 'Text', 'Email', 'Book', 'Quote', 'Note'];
 
@@ -23,10 +22,10 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
       >
         <div style={{ display: 'grid', gap: 16 }}>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <Badge tone="gold">Customer 360</Badge>
-            <Badge tone={isPastDue ? 'neutral' : 'gold'}>{customer.status}</Badge>
-            {isVip ? <Badge tone="gold">VIP / High Value</Badge> : null}
-            <Badge tone="neutral">{customer.propertyType}</Badge>
+            <Tag tone="gold">Customer 360</Tag>
+            <Tag tone={isPastDue ? 'neutral' : 'gold'}>{customer.status}</Tag>
+            {isVip ? <Tag tone="gold">VIP / High Value</Tag> : null}
+            <Tag tone="neutral">{customer.propertyType}</Tag>
           </div>
 
           <div>
@@ -60,6 +59,14 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
         <Panel title="Communication Preference" value="Text + Email" detail="Future communication history and consent tracking will live here." />
       </section>
     </div>
+  );
+}
+
+function Tag({ children, tone }: { children: string; tone: 'gold' | 'neutral' }) {
+  return (
+    <span style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 999, background: tone === 'gold' ? 'var(--jarvixx-gold-soft)' : '#fff', padding: '7px 10px', fontSize: 11, fontWeight: 800 }}>
+      {children}
+    </span>
   );
 }
 
