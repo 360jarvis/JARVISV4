@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AppShell from '../../components/AppShell';
+import { ArrivalWindowCard, DEFAULT_ARRIVAL_WINDOWS } from '../../components/scheduling/ArrivalWindows';
 
 const kpis = [
   { label: "Today's Bookings", value: '18', detail: 'vs yesterday', trend: '+12%', icon: '▣' },
@@ -20,15 +21,6 @@ const priorities = [
   { label: 'New leads', detail: 'Leads awaiting contact', count: 7, tone: '#fef3c7', icon: '◌' }
 ];
 
-const board = [
-  { label: 'Arrivals', value: '12', detail: 'On the way' },
-  { label: 'On the way', value: '23', detail: 'Providers traveling' },
-  { label: 'Running late', value: '4', detail: 'Require attention' },
-  { label: 'Clocked in', value: '54', detail: 'In progress' },
-  { label: 'Completed', value: '18', detail: 'Today' },
-  { label: 'Needs review', value: '6', detail: 'Quality checks' }
-];
-
 const quickActions = [
   { label: 'New Booking', href: '/app/bookings/new', icon: '▣' },
   { label: 'New Customer', href: '/app/customers', icon: '＋' },
@@ -39,9 +31,9 @@ const quickActions = [
 ];
 
 const activity = [
-  { label: 'New booking created', detail: 'Residential Deep Clean · $296.00', time: '2m ago', color: '#fef3c7' },
+  { label: 'New booking created', detail: 'Residential Deep Clean · Arrival Window 8:00 AM - 10:00 AM', time: '2m ago', color: '#fef3c7' },
   { label: 'Payment received', detail: '$180.00 from Jennifer Martinez', time: '8m ago', color: '#dcfce7' },
-  { label: 'Provider checked in', detail: 'Maria S. at 123 Maple St', time: '15m ago', color: '#fee2e2' },
+  { label: 'Provider checked in', detail: 'Maria S. within 10:00 AM - 1:00 PM window', time: '15m ago', color: '#fee2e2' },
   { label: 'Quality inspection completed', detail: 'Passed · 456 Oak Dr', time: '28m ago', color: '#dcfce7' }
 ];
 
@@ -114,15 +106,11 @@ export default function AppDashboardPage() {
           </article>
 
           <article style={{ borderRadius: 22, padding: 18, background: 'linear-gradient(180deg, #090806 0%, #15130f 100%)', color: '#fff', boxShadow: '0 24px 70px rgba(0,0,0,0.18)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 15 }}><div><h2 style={{ margin: 0, fontSize: 16 }}>Today’s Operations Board</h2><p style={{ margin: '6px 0 0', color: '#b9ae98', fontSize: 12 }}>Live command view</p></div><span style={{ border: '1px solid rgba(34,197,94,0.35)', color: '#86efac', borderRadius: 999, padding: '6px 10px', height: 28, fontSize: 12 }}>● Live</span></div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 8 }}>
-              {board.map((item) => (
-                <div key={item.label} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 13, padding: 14 }}>
-                  <div style={{ color: '#b9ae98', fontSize: 12 }}>{item.label}</div><div style={{ marginTop: 10, fontSize: 28, color: 'var(--jarvixx-gold)', fontWeight: 800 }}>{item.value}</div><div style={{ marginTop: 6, color: '#e8deca', fontSize: 12 }}>{item.detail}</div>
-                </div>
-              ))}
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 15 }}><div><h2 style={{ margin: 0, fontSize: 16 }}>Today’s Arrival Windows</h2><p style={{ margin: '6px 0 0', color: '#b9ae98', fontSize: 12 }}>Default scheduling model</p></div><span style={{ border: '1px solid rgba(34,197,94,0.35)', color: '#86efac', borderRadius: 999, padding: '6px 10px', height: 28, fontSize: 12 }}>● Live</span></div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
+              {DEFAULT_ARRIVAL_WINDOWS.map((window) => <ArrivalWindowCard key={window.id} window={window} />)}
             </div>
-            <a href="/app/dispatch" style={{ marginTop: 14, display: 'flex', justifyContent: 'space-between', padding: 13, borderRadius: 12, background: 'linear-gradient(135deg, #d8bd7f, #a9822b)', color: '#111', fontWeight: 800 }}>Open Dispatch Command Center <span>›</span></a>
+            <a href="/app/dispatch" style={{ marginTop: 14, display: 'flex', justifyContent: 'space-between', padding: 13, borderRadius: 12, background: 'linear-gradient(135deg, #d8bd7f, #a9822b)', color: '#111', fontWeight: 800 }}>Open Dispatch by Arrival Window <span>›</span></a>
           </article>
 
           <article className="lux-card" style={{ padding: 18 }}>
