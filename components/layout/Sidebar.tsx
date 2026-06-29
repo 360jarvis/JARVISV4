@@ -72,8 +72,8 @@ function SidebarBrand() {
   return (
     <div
       style={{
-        marginBottom: 18,
-        padding: '18px 16px',
+        marginBottom: 14,
+        padding: '16px 14px',
         border: '1px solid rgba(216,189,127,0.22)',
         borderRadius: 22,
         background: 'rgba(255,255,255,0.04)',
@@ -88,23 +88,23 @@ function SidebarBrand() {
         <div
           aria-hidden="true"
           style={{
-            width: 38,
-            height: 38,
+            width: 36,
+            height: 36,
             borderRadius: 14,
             border: '1px solid rgba(216,189,127,0.35)',
             background: 'rgba(216,189,127,0.12)',
             display: 'grid',
             placeItems: 'center',
             color: 'var(--jarvixx-gold)',
-            fontSize: 13,
+            fontSize: 12,
             letterSpacing: '0.08em'
           }}
         >
           JX
         </div>
       </div>
-      <div style={{ color: '#cfc2a9', fontSize: 12, marginTop: 12, lineHeight: 1.45 }}>Enterprise clean build</div>
-      <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 8, color: '#e9dcc1', fontSize: 12 }}>
+      <div style={{ color: '#cfc2a9', fontSize: 12, marginTop: 10, lineHeight: 1.35 }}>Enterprise clean build</div>
+      <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8, color: '#e9dcc1', fontSize: 12 }}>
         <span style={{ width: 8, height: 8, borderRadius: 99, background: 'var(--jarvixx-gold)', display: 'inline-block' }} />
         Stable foundation active
       </div>
@@ -118,11 +118,11 @@ function SidebarItem({ item }: { item: NavItem }) {
       href={item.href}
       style={{
         display: 'grid',
-        gridTemplateColumns: '34px 1fr',
+        gridTemplateColumns: '32px 1fr',
         gap: 10,
         alignItems: 'center',
-        padding: '10px 10px',
-        borderRadius: 16,
+        padding: '8px 8px',
+        borderRadius: 15,
         color: '#f8f3e8',
         border: '1px solid transparent',
         transition: 'background 160ms ease, border-color 160ms ease, transform 160ms ease'
@@ -131,8 +131,8 @@ function SidebarItem({ item }: { item: NavItem }) {
       <span
         aria-hidden="true"
         style={{
-          width: 34,
-          height: 34,
+          width: 32,
+          height: 32,
           borderRadius: 12,
           display: 'grid',
           placeItems: 'center',
@@ -146,8 +146,8 @@ function SidebarItem({ item }: { item: NavItem }) {
         {item.initials}
       </span>
       <span style={{ minWidth: 0 }}>
-        <span style={{ display: 'block', fontSize: 13.5, lineHeight: 1.2 }}>{item.label}</span>
-        <span style={{ display: 'block', color: '#b9ae98', fontSize: 11.5, marginTop: 3, lineHeight: 1.25 }}>{item.description}</span>
+        <span style={{ display: 'block', fontSize: 13, lineHeight: 1.15 }}>{item.label}</span>
+        <span style={{ display: 'block', color: '#b9ae98', fontSize: 11, marginTop: 2, lineHeight: 1.2 }}>{item.description}</span>
       </span>
     </a>
   );
@@ -156,8 +156,8 @@ function SidebarItem({ item }: { item: NavItem }) {
 function SidebarSection({ group }: { group: NavGroup }) {
   return (
     <section aria-label={group.title}>
-      <div style={{ color: '#b7aa92', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 8px 8px' }}>{group.title}</div>
-      <div style={{ display: 'grid', gap: 5 }}>
+      <div style={{ color: '#b7aa92', fontSize: 10.5, letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 8px 6px' }}>{group.title}</div>
+      <div style={{ display: 'grid', gap: 3 }}>
         {group.items.map((item) => (
           <SidebarItem key={item.href} item={item} />
         ))}
@@ -173,16 +173,14 @@ export default function Sidebar() {
       style={{
         background: 'linear-gradient(180deg, #090806 0%, #11100d 54%, #090806 100%)',
         color: 'white',
-        padding: '22px 18px',
+        padding: '18px 18px 28px',
         borderRight: '1px solid rgba(216,189,127,0.24)',
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
-        overflowY: 'auto'
+        minHeight: '100vh',
+        alignSelf: 'start'
       }}
     >
       <SidebarBrand />
-      <nav style={{ display: 'grid', gap: 18 }}>
+      <nav style={{ display: 'grid', gap: 14 }}>
         {navGroups.map((group) => (
           <SidebarSection key={group.title} group={group} />
         ))}
