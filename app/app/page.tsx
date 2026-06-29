@@ -1,5 +1,5 @@
 import AppShell from '../../components/AppShell';
-import { ActivityFeed, Badge, Button, Card, KpiCard, MetricGrid, StatCard } from '../../components/ui';
+import { ActivityFeed, Badge, Button, Card, KpiCard, MetricGrid, StatCard } from '../../components/ui/index';
 
 const todayPriorities = [
   { label: 'Unassigned bookings', value: '0', supportingText: 'Ready for dispatch rules' },
