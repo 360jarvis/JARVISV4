@@ -4,7 +4,7 @@ import TopNavigation from './TopNavigation';
 
 export default function AppShell(props: { title: string; subtitle: string; children?: ReactNode }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '304px 1fr', minHeight: '100vh', background: 'var(--jarvixx-ivory)' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', minHeight: '100vh', background: 'var(--jarvixx-ivory)' }}>
       <Sidebar />
       <main style={{ minWidth: 0 }}>
         <TopNavigation title={props.title} subtitle={props.subtitle} />
