@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AppShell from '../../components/AppShell';
+import DashboardPersonalization from '../../components/dashboard/DashboardPersonalization';
 import EnterpriseWidget from '../../components/dashboard/EnterpriseWidget';
 import { ArrivalWindowCard, DEFAULT_ARRIVAL_WINDOWS } from '../../components/scheduling/ArrivalWindows';
 
@@ -144,6 +145,8 @@ export default function AppDashboardPage() {
             </div>
           </EnterpriseWidget>
         </section>
+
+        <DashboardPersonalization />
 
         <section style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr)) auto', gap: 14, alignItems: 'center', background: 'linear-gradient(180deg, #090806, #15130f)', color: '#fff', borderRadius: 22, padding: 18, boxShadow: '0 24px 70px rgba(0,0,0,0.18)' }}>
           {['System Status All Systems Operational', 'Database Connected', 'Payments All Systems Go', 'Services Active', 'Last Backup 2h ago'].map((item) => <div key={item} style={{ color: '#e8deca', fontSize: 13 }}>● {item}</div>)}
