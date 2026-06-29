@@ -1,6 +1,6 @@
 import AppShell from '../../../components/AppShell';
-import ModulePlaceholder from '../../../components/ModulePlaceholder';
+import DispatchBoard from '../../../components/DispatchBoard';
 
 export default function DispatchPage() {
-  return <AppShell title="Dispatch" subtitle="Schedule operations, assignments, maps, and route visibility."><ModulePlaceholder name="Dispatch" /></AppShell>;
+  return <AppShell title="Dispatch" subtitle="Scheduling, assignments, capacity, routes, and operational status."><DispatchBoard /></AppShell>;
 }
