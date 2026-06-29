@@ -1,5 +1,12 @@
-import { redirect } from 'next/navigation';
-
-export default function OldBookingPage() {
-  redirect('/app/bookings');
+export default function LegacyBookingPage() {
+  return (
+    <main className="jarvixx-page" style={{ padding: 48 }}>
+      <section className="lux-card" style={{ maxWidth: 760, margin: '0 auto', padding: 36 }}>
+        <p className="kicker">Legacy Route</p>
+        <h1>Booking moved</h1>
+        <p style={{ color: 'var(--jarvixx-muted)' }}>The booking area is now available in the clean Jarvixx Command Center.</p>
+        <a className="lux-button" href="/app/bookings">Open Booking Command Center</a>
+      </section>
+    </main>
+  );
 }
