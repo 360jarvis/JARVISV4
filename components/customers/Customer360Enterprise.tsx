@@ -186,6 +186,23 @@ const qualityInspectionNotes = [
   { title: 'Service Improvement Opportunities', detail: 'Continue monitoring kitchen detail, bathroom finish, and arrival-window consistency.' }
 ];
 
+const aiCustomerInsights = [
+  { label: 'Customer Health Score', value: '96' },
+  { label: 'Churn Risk', value: 'Low' },
+  { label: 'Upsell Opportunity', value: 'High' },
+  { label: 'Value Trend', value: 'Increasing' },
+  { label: 'Preferred Service', value: 'Deep Cleaning' },
+  { label: 'Recommended Frequency', value: 'Bi-Weekly' },
+  { label: 'Next Best Action', value: 'Quarterly Detail' },
+  { label: 'AI Confidence', value: '98%' }
+];
+
+const aiCustomerInsightNotes = [
+  { title: 'AI Executive Summary', detail: 'Long-term recurring customer with excellent payment history and consistently high satisfaction.' },
+  { title: 'Recommended Actions', detail: 'Offer quarterly detail cleaning, send anniversary thank you, and maintain preferred team assignment.' },
+  { title: 'Growth Opportunities', detail: 'Best growth paths include referral campaign, premium add-ons, and membership upgrade.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -480,6 +497,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {qualityInspectionNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>AI Customer Insights</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Predictive customer health and next best actions</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static UI foundation for future AI-generated customer summaries, retention signals, growth opportunities, and recommended actions.</p>
+          </div>
+          <Tag tone="gold">AI Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {aiCustomerInsights.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {aiCustomerInsightNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
