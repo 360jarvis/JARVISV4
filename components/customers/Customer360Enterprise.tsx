@@ -118,6 +118,23 @@ const financialNotes = [
   { title: 'Credit & Refund Status', detail: 'No active refund, credit, dispute, or payment issue is currently flagged in this UI foundation.' }
 ];
 
+const quoteOpportunities = [
+  { label: 'Active Quotes', value: '2' },
+  { label: 'Converted Quotes', value: '5' },
+  { label: 'Lost Opportunities', value: '1' },
+  { label: 'Follow-Up Needed', value: '1' },
+  { label: 'Pipeline Value', value: '$740.00' },
+  { label: 'Average Quote Value', value: '$370.00' },
+  { label: 'Win Probability', value: '82%' },
+  { label: 'Next Follow-Up', value: '07/01/2026' }
+];
+
+const quoteOpportunityNotes = [
+  { title: 'Current Opportunities', detail: 'Two static quote opportunities are prepared for recurring add-ons and quarterly detail service.' },
+  { title: 'Recommended Follow-Up', detail: 'Follow up with a warm reminder and highlight preferred team availability.' },
+  { title: 'Upsell Opportunities', detail: 'Best offer path includes refrigerator, baseboards, and quarterly deep detail package.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -308,6 +325,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {financialNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Quotes & Opportunities</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Quote pipeline and follow-up opportunities</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for active quotes, conversions, follow-ups, pipeline value, win probability, and upsell paths.</p>
+          </div>
+          <Tag tone="gold">Pipeline Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {quoteOpportunities.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {quoteOpportunityNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
