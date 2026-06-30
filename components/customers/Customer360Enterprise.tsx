@@ -152,6 +152,23 @@ const communicationNotes = [
   { title: 'Marketing & Consent Summary', detail: 'Marketing status, opt-in consent, and follow-up eligibility will connect here later.' }
 ];
 
+const documentCompliance = [
+  { label: 'Documents on File', value: '6' },
+  { label: 'Signed Agreements', value: '2' },
+  { label: 'ID Verification', value: 'Verified' },
+  { label: 'Insurance Certificate', value: 'On File' },
+  { label: 'Background Check', value: 'Clear' },
+  { label: 'NDA Status', value: 'Signed' },
+  { label: 'Last Upload', value: '06/22/2026' },
+  { label: 'Compliance Score', value: '96%' }
+];
+
+const documentComplianceNotes = [
+  { title: 'Missing Documents', detail: 'No required customer-facing documents are currently missing in this static UI foundation.' },
+  { title: 'Expiring Documents', detail: 'Insurance certificate review is scheduled before the next annual compliance checkpoint.' },
+  { title: 'Compliance Notes', detail: 'Document vault, signed agreements, access files, and verification records will connect here later.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -394,6 +411,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {communicationNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Documents & Compliance</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Document vault and compliance status</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for uploaded files, signed agreements, verification status, expiring documents, and compliance notes.</p>
+          </div>
+          <Tag tone="gold">Compliance Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {documentCompliance.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {documentComplianceNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
