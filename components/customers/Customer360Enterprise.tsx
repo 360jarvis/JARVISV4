@@ -101,6 +101,23 @@ const loyaltyNotes = [
   { title: 'Upsell Path', detail: 'Best next offer is quarterly detail cleaning with refrigerator and baseboard add-ons.' }
 ];
 
+const financialSummary = [
+  { label: 'Lifetime Revenue', value: '$5,180.00' },
+  { label: 'Outstanding Balance', value: '$0.00' },
+  { label: 'Total Paid', value: '$5,180.00' },
+  { label: 'Average Invoice', value: '$185.00' },
+  { label: 'Saved Payment Method', value: 'Card On File' },
+  { label: 'Last Payment', value: '06/18/2026' },
+  { label: 'AutoPay Status', value: 'Enabled' },
+  { label: 'Fees Collected', value: '$0.00' }
+];
+
+const financialNotes = [
+  { title: 'Payment History Summary', detail: 'Customer has a clean payment record with no current balance and consistent completed payments.' },
+  { title: 'Billing Preferences', detail: 'Card-on-file and automatic billing are preferred for recurring service invoices.' },
+  { title: 'Credit & Refund Status', detail: 'No active refund, credit, dispute, or payment issue is currently flagged in this UI foundation.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -265,6 +282,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {loyaltyNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Financial Summary</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Billing overview and payment health</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for revenue, balances, saved payment status, invoice behavior, credits, and refunds.</p>
+          </div>
+          <Tag tone="gold">Billing Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {financialSummary.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {financialNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
