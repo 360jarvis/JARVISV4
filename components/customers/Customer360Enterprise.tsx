@@ -84,6 +84,23 @@ const serviceHistoryNotes = [
   { title: 'Service Recommendations', detail: 'Consider recurring add-ons for refrigerator, baseboards, and quarterly detail cleaning.' }
 ];
 
+const loyaltyProfile = [
+  { label: 'Membership Status', value: 'Gold' },
+  { label: 'Loyalty Tier', value: 'Preferred Client' },
+  { label: 'Referral Credits', value: '$45.00' },
+  { label: 'Discount Eligibility', value: 'Bi-Weekly Rate' },
+  { label: 'Anniversary Date', value: '03/14' },
+  { label: 'Retention Risk', value: 'Low' },
+  { label: 'Upgrade Fit', value: 'Quarterly Detail' },
+  { label: 'Next Loyalty Touch', value: '07/15/2026' }
+];
+
+const loyaltyNotes = [
+  { title: 'Retention Signal', detail: 'Customer has strong recurring history, low cancellation count, and consistent satisfaction.' },
+  { title: 'Reward Opportunity', detail: 'Eligible for referral credit reminder and anniversary appreciation message.' },
+  { title: 'Upsell Path', detail: 'Best next offer is quarterly detail cleaning with refrigerator and baseboard add-ons.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -222,6 +239,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {serviceHistoryNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Loyalty & Membership</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Retention, rewards, and upgrade opportunities</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for loyalty tier, referral credits, membership fit, retention signal, and next customer touch.</p>
+          </div>
+          <Tag tone="gold">Loyalty Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {loyaltyProfile.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {loyaltyNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
