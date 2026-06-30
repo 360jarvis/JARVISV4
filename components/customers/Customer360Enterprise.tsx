@@ -1,6 +1,6 @@
 import type { CustomerRecord } from '../../lib/customers';
 
-const quickActions = ['Call', 'Text', 'Email', 'Book', 'Quote', 'Note'];
+const quickActions = ['New Booking', 'Create Quote', 'Collect Payment', 'Upload Document', 'Add Note', 'Send Email', 'Send SMS', 'Call Customer', 'Quality Review', 'Assistant Summary'];
 
 const timeline = [
   { type: 'Booking', title: 'Deep Cleaning completed', detail: 'Arrival Window 8:00 AM - 10:00 AM · Team assigned', date: '06/18/2026' },
