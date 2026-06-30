@@ -22,6 +22,17 @@ const recommendations = [
   { title: 'Prepare customer summary', detail: 'Create a quick office summary before contact.', action: 'Summarize' }
 ];
 
+const customerSnapshot = [
+  { label: 'Customer Since', value: '03/14/2024' },
+  { label: 'Total Bookings', value: '28' },
+  { label: 'Completed Jobs', value: '26' },
+  { label: 'Cancelled Jobs', value: '2' },
+  { label: 'Average Ticket', value: '$185.00' },
+  { label: 'Preferred Team', value: 'Team Maria' },
+  { label: 'Preferred Arrival Window', value: '8:00 AM - 10:00 AM' },
+  { label: 'Referral Source', value: 'Google' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -70,6 +81,23 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
           <Metric label="Last Cleaning" value={customer.lastBooking} />
           <Metric label="Next Arrival" value={customer.nextService === 'Needs Quote' ? 'Needs Quote' : '8:00 AM - 10:00 AM'} />
           <Metric label="Quality Score" value="4.8" />
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Customer Snapshot</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Relationship Overview</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Customer tenure, booking history, preferences, and source summary.</p>
+          </div>
+          <Tag tone="gold">Enterprise Profile</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {customerSnapshot.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
         </div>
       </section>
 
