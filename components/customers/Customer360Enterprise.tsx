@@ -135,6 +135,23 @@ const quoteOpportunityNotes = [
   { title: 'Upsell Opportunities', detail: 'Best offer path includes refrigerator, baseboards, and quarterly deep detail package.' }
 ];
 
+const communicationCenter = [
+  { label: 'Preferred Contact', value: 'Text + Email' },
+  { label: 'Last Email Sent', value: '06/20/2026' },
+  { label: 'Last SMS Sent', value: '06/28/2026' },
+  { label: 'Last Phone Call', value: '06/10/2026' },
+  { label: 'Email Engagement', value: 'Opened' },
+  { label: 'SMS Engagement', value: 'Replied' },
+  { label: 'Marketing Status', value: 'Subscribed' },
+  { label: 'Next Follow-Up', value: '07/01/2026' }
+];
+
+const communicationNotes = [
+  { title: 'Recent Communications', detail: 'Recent SMS reminders and service follow-ups are summarized here as a static UI foundation.' },
+  { title: 'Communication Preferences', detail: 'Customer prefers text-first updates with email confirmations for receipts and schedule details.' },
+  { title: 'Marketing & Consent Summary', detail: 'Marketing status, opt-in consent, and follow-up eligibility will connect here later.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -351,6 +368,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {quoteOpportunityNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Communication Center</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Customer messaging, engagement, and consent</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for contact preferences, recent outreach, engagement status, marketing consent, and follow-up timing.</p>
+          </div>
+          <Tag tone="gold">Comms Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {communicationCenter.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {communicationNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
