@@ -33,6 +33,23 @@ const customerSnapshot = [
   { label: 'Referral Source', value: 'Google' }
 ];
 
+const propertyProfile = [
+  { label: 'Primary Service', value: 'Deep Cleaning' },
+  { label: 'Property Type', value: 'Residential' },
+  { label: 'Bedrooms', value: '4' },
+  { label: 'Bathrooms', value: '3' },
+  { label: 'Square Feet', value: '2,350' },
+  { label: 'Pets', value: 'Yes' },
+  { label: 'Gate Code', value: 'On File' },
+  { label: 'Key Access', value: 'Lockbox' }
+];
+
+const serviceNotes = [
+  { title: 'Parking Notes', detail: 'Use driveway when available. Street parking is acceptable before 10:00 AM.' },
+  { title: 'Alarm Instructions', detail: 'Alarm details should be confirmed before arrival and stored securely.' },
+  { title: 'Special Instructions', detail: 'Customer prefers the same team, morning service, and extra attention to kitchen and bathrooms.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -97,6 +114,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
           {customerSnapshot.map((item) => (
             <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Property & Service Profile</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Cleaning requirements and access details</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for property size, service type, access notes, and customer preferences.</p>
+          </div>
+          <Tag tone="gold">Service Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {propertyProfile.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {serviceNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
           ))}
         </div>
       </section>
