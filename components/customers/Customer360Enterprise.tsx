@@ -50,6 +50,23 @@ const serviceNotes = [
   { title: 'Special Instructions', detail: 'Customer prefers the same team, morning service, and extra attention to kitchen and bathrooms.' }
 ];
 
+const accessPreferences = [
+  { label: 'Entry Method', value: 'Lockbox' },
+  { label: 'Contact Before Arrival', value: 'Text Only' },
+  { label: 'Preferred Language', value: 'English' },
+  { label: 'Pets Secured', value: 'Yes' },
+  { label: 'Shoes Policy', value: 'Shoe Covers' },
+  { label: 'Supplies', value: 'Company Provided' },
+  { label: 'Photo Permission', value: 'Before / After' },
+  { label: 'Reminder Preference', value: '24 Hours Before' }
+];
+
+const preferenceNotes = [
+  { title: 'Communication Rule', detail: 'Customer prefers text messages for arrival updates, reminders, and schedule confirmations.' },
+  { title: 'Home Preference', detail: 'Use light fragrance only. Avoid moving personal office documents or bedroom nightstand items.' },
+  { title: 'Team Notes', detail: 'Customer prefers Team Maria when available and values consistent cleaners.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -136,6 +153,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {serviceNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Customer Access & Preferences</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Arrival, entry, communication, and home preferences</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for safe entry, customer communication rules, supplies, pets, and team preferences.</p>
+          </div>
+          <Tag tone="gold">Preference Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {accessPreferences.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {preferenceNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
