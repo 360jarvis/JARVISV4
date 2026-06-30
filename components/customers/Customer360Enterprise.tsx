@@ -3,8 +3,8 @@ import type { CustomerRecord } from '../../lib/customers';
 const quickActions = ['New Booking', 'Create Quote', 'Collect Payment', 'Upload Document', 'Add Note', 'Send Email', 'Send SMS', 'Call Customer', 'Quality Review', 'Assistant Summary'];
 
 const timeline = [
-  { type: 'Booking', title: 'Deep Cleaning completed', detail: 'Arrival Window 8:00 AM - 10:00 AM · Team assigned', date: '06/18/2026' },
-  { type: 'Payment', title: 'Payment recorded', detail: 'Card payment matched to latest cleaning', date: '06/18/2026' },
+  { type: 'Booking', title: 'Deep Cleaning completed', detail: 'Arrival Window 8:00 AM - 10:00 AM - Team assigned', date: '06/18/2026' },
+  { type: 'Payment', title: 'Payment recorded', detail: 'Payment matched to latest cleaning', date: '06/18/2026' },
   { type: 'Quote', title: 'Recurring service offer sent', detail: 'Bi-weekly service recommendation prepared', date: '06/12/2026' },
   { type: 'Note', title: 'Customer preference updated', detail: 'Prefers same team and morning arrival window', date: '06/10/2026' }
 ];
@@ -12,7 +12,7 @@ const timeline = [
 const records = [
   { title: 'Documents', value: '3', detail: 'Service agreement, access notes, signed authorization' },
   { title: 'Reviews', value: '4.8', detail: 'Latest rating and customer experience history' },
-  { title: 'Payments', value: '$0.00', detail: 'Open balance, card status, receipts, and refunds' }
+  { title: 'Payments', value: '$0.00', detail: 'Open balance, payment status, receipts, and refunds' }
 ];
 
 const recommendations = [
@@ -40,18 +40,18 @@ const propertyProfile = [
   { label: 'Bathrooms', value: '3' },
   { label: 'Square Feet', value: '2,350' },
   { label: 'Pets', value: 'Yes' },
-  { label: 'Gate Code', value: 'On File' },
-  { label: 'Key Access', value: 'Lockbox' }
+  { label: 'Access Status', value: 'On File' },
+  { label: 'Entry Notes', value: 'Confirmed' }
 ];
 
 const serviceNotes = [
-  { title: 'Parking Notes', detail: 'Use driveway when available. Street parking is acceptable before 10:00 AM.' },
-  { title: 'Alarm Instructions', detail: 'Alarm details should be confirmed before arrival and stored securely.' },
+  { title: 'Parking Notes', detail: 'Use the preferred parking instructions saved for this customer before arrival.' },
+  { title: 'Arrival Instructions', detail: 'Arrival and entry details should be confirmed by the office before dispatch.' },
   { title: 'Special Instructions', detail: 'Customer prefers the same team, morning service, and extra attention to kitchen and bathrooms.' }
 ];
 
 const accessPreferences = [
-  { label: 'Entry Method', value: 'Lockbox' },
+  { label: 'Entry Method', value: 'On File' },
   { label: 'Contact Before Arrival', value: 'Text Only' },
   { label: 'Preferred Language', value: 'English' },
   { label: 'Pets Secured', value: 'Yes' },
@@ -63,8 +63,25 @@ const accessPreferences = [
 
 const preferenceNotes = [
   { title: 'Communication Rule', detail: 'Customer prefers text messages for arrival updates, reminders, and schedule confirmations.' },
-  { title: 'Home Preference', detail: 'Use light fragrance only. Avoid moving personal office documents or bedroom nightstand items.' },
+  { title: 'Home Preference', detail: 'Use light fragrance only and follow saved room-by-room preference notes.' },
   { title: 'Team Notes', detail: 'Customer prefers Team Maria when available and values consistent cleaners.' }
+];
+
+const serviceHistory = [
+  { label: 'Last Service', value: '06/18/2026' },
+  { label: 'Next Scheduled Service', value: '07/02/2026' },
+  { label: 'Current Frequency', value: 'Bi-Weekly' },
+  { label: 'Favorite Services', value: 'Deep + Fridge' },
+  { label: 'Average Duration', value: '3h 45m' },
+  { label: 'Lifetime Hours', value: '98.5 hrs' },
+  { label: 'Reclean Rate', value: '0.8%' },
+  { label: 'Satisfaction', value: '4.9 / 5' }
+];
+
+const serviceHistoryNotes = [
+  { title: 'Recent Service Highlights', detail: 'Latest completed service was deep cleaning with strong quality feedback and no open balance.' },
+  { title: 'Cleaning Preferences', detail: 'Customer prefers recurring morning service, consistent team assignment, and kitchen priority.' },
+  { title: 'Service Recommendations', detail: 'Consider recurring add-ons for refrigerator, baseboards, and quarterly detail cleaning.' }
 ];
 
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
@@ -96,7 +113,7 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
           <div>
             <p className="kicker" style={{ margin: 0 }}>{customer.id}</p>
             <h1 style={{ margin: '8px 0 8px', fontSize: 36, letterSpacing: '-0.05em', lineHeight: 1 }}>{customer.name}</h1>
-            <p style={{ margin: 0, color: 'var(--jarvixx-muted)', fontSize: 14 }}>{customer.phone} · {customer.email}</p>
+            <p style={{ margin: 0, color: 'var(--jarvixx-muted)', fontSize: 14 }}>{customer.phone} - {customer.email}</p>
           </div>
 
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -187,9 +204,35 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
         </div>
       </section>
 
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Customer Service History</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Service history summary</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for service rhythm, recent activity, preferences, satisfaction, and future service recommendations.</p>
+          </div>
+          <Tag tone="gold">History Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {serviceHistory.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {serviceHistoryNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
         <Panel title="Customer Health" value={isPastDue ? 'Needs Attention' : 'Healthy'} detail="Payment, service, quality, and recurring status summarized here." />
-        <Panel title="Property Intelligence" value={`${customer.propertyType} · ${customer.city} ${customer.zip}`} detail="Property details, access notes, supplies, pets, parking, and preferred team come next." />
+        <Panel title="Property Intelligence" value={`${customer.propertyType} - ${customer.city} ${customer.zip}`} detail="Property details, access notes, supplies, pets, parking, and preferred team come next." />
         <Panel title="Communication Preference" value="Text + Email" detail="Future communication history and consent tracking will live here." />
       </section>
 
