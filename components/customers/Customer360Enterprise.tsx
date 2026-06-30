@@ -169,6 +169,23 @@ const documentComplianceNotes = [
   { title: 'Compliance Notes', detail: 'Document vault, signed agreements, access files, and verification records will connect here later.' }
 ];
 
+const qualityInspection = [
+  { label: 'Overall Quality Score', value: '4.9 / 5' },
+  { label: 'Supervisor Inspections', value: '18' },
+  { label: 'Recleans', value: '1' },
+  { label: 'Damage Claims', value: '0' },
+  { label: 'Customer Complaints', value: '2' },
+  { label: 'Quality Trend', value: 'Improving' },
+  { label: 'Last Inspection', value: '06/18/2026' },
+  { label: 'Next Review', value: '07/18/2026' }
+];
+
+const qualityInspectionNotes = [
+  { title: 'Recent Inspection Summary', detail: 'Latest inspection passed with strong quality feedback and no damage claim recorded.' },
+  { title: 'Quality Trends', detail: 'Customer satisfaction and inspection history show an improving quality trend.' },
+  { title: 'Service Improvement Opportunities', detail: 'Continue monitoring kitchen detail, bathroom finish, and arrival-window consistency.' }
+];
+
 export default function Customer360Enterprise({ customer }: { customer: CustomerRecord }) {
   const isPastDue = customer.status === 'Past Due';
   const isVip = customer.status === 'VIP' || customer.tags.includes('High Value');
@@ -437,6 +454,32 @@ export default function Customer360Enterprise({ customer }: { customer: Customer
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
           {documentComplianceNotes.map((note) => (
+            <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
+              <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
+              <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lux-card" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <p className="kicker" style={{ margin: 0 }}>Quality & Inspection History</p>
+            <h2 style={{ margin: '8px 0 0', fontSize: 22, letterSpacing: '-0.035em' }}>Quality score, inspections, claims, and service improvement</h2>
+            <p style={{ margin: '6px 0 0', color: 'var(--jarvixx-muted)', fontSize: 13 }}>Static foundation for supervisor inspections, recleans, damage claims, complaints, quality trend, and next review timing.</p>
+          </div>
+          <Tag tone="gold">Quality Ready</Tag>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10, marginTop: 16 }}>
+          {qualityInspection.map((item) => (
+            <Metric key={item.label} label={item.label} value={item.value} />
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 14 }}>
+          {qualityInspectionNotes.map((note) => (
             <article key={note.title} style={{ border: '1px solid var(--jarvixx-border)', borderRadius: 16, padding: 14, background: '#fff' }}>
               <strong style={{ display: 'block', fontSize: 13 }}>{note.title}</strong>
               <span style={{ display: 'block', marginTop: 6, color: 'var(--jarvixx-muted)', fontSize: 12, lineHeight: 1.5 }}>{note.detail}</span>
