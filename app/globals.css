@@ -65,3 +65,68 @@ textarea {
   letter-spacing: 0.14em;
   font-size: 12px;
 }
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 292px minmax(0, 1fr);
+  min-height: 100vh;
+  background: var(--jarvixx-ivory);
+}
+
+.app-sidebar {
+  background: var(--jarvixx-black);
+  color: white;
+  padding: 12px;
+  border-right: 1px solid rgba(216, 189, 127, 0.22);
+}
+
+.app-sidebar-brand {
+  margin-bottom: 10px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(216, 189, 127, 0.22);
+}
+
+.app-sidebar-nav {
+  display: grid;
+  gap: 7px;
+}
+
+.app-main {
+  min-width: 0;
+  padding: 8px 12px;
+}
+
+.app-header {
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid rgba(216, 189, 127, 0.22);
+    padding: 18px;
+  }
+
+  .app-sidebar-nav {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+  }
+
+  .app-main {
+    padding: 18px;
+  }
+
+  .app-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
