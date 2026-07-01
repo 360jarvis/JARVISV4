@@ -1,4 +1,4 @@
-import type { DashboardAlert, DashboardData, DashboardKpi, DashboardMetric } from '../lib/dashboard';
+import type { DashboardAlert, DashboardData, DashboardMetric } from '../lib/dashboard';
 
 const card = {
   background: '#fff',
@@ -9,6 +9,22 @@ const card = {
 
 const iconTones = ['#dbe7ff', '#dff3e5', '#fff0cb', '#eee0ff', '#dbe8ff', '#ffe1e1'];
 
+const menuGroups = [
+  { title: 'Core', items: [['Dashboard', '/app'], ['Customer 360', '/app/customer-360'], ['Jarvixx AI', '/app/jarvixx-ai']] },
+  { title: 'Operations', items: [['Bookings', '/app/bookings'], ['New Booking', '/app/bookings/new'], ['Dispatch', '/app/dispatch'], ['Workforce', '/app/workforce']] },
+  { title: 'Revenue', items: [['Financial', '/app/financial'], ['Payments', '/app/payments'], ['Quotes', '/app/quotes'], ['Reports', '/app/reports']] },
+  { title: 'Admin', items: [['Quality', '/app/quality'], ['Growth', '/app/growth'], ['Settings', '/app/settings'], ['Support', '/app/support']] }
+];
+
+const searchTargets = [
+  ['Customers', '/app/customers'],
+  ['Bookings', '/app/bookings'],
+  ['Quotes', '/app/quotes'],
+  ['Reports', '/app/reports'],
+  ['Payments', '/app/payments'],
+  ['Dispatch', '/app/dispatch']
+];
+
 function findKpi(data: DashboardData, label: string) {
   return data.topKpis.find((item) => item.label.toLowerCase() === label.toLowerCase());
 }
@@ -17,16 +33,45 @@ function findMetric(metrics: DashboardMetric[], label: string) {
   return metrics.find((item) => item.label.toLowerCase() === label.toLowerCase());
 }
 
-function metricValue(data: DashboardData, label: string, fallback = '0') {
-  return findKpi(data, label)?.value || fallback;
-}
-
-function metricDetail(data: DashboardData, label: string, fallback = 'From connected data') {
-  return findKpi(data, label)?.detail || fallback;
-}
-
 function displayMoney(value?: string) {
   return value && value !== 'Restricted' ? value : '$0.00';
+}
+
+function DashboardMenu() {
+  return (
+    <details className="dashboard-menu">
+      <summary aria-label="Open Jarvixx menu"><span>☰</span><strong>Menu</strong></summary>
+      <div className="dashboard-menu-panel">
+        {menuGroups.map((group) => (
+          <section key={group.title}>
+            <h2>{group.title}</h2>
+            {group.items.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
+          </section>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+function DashboardSearch() {
+  return (
+    <details className="dashboard-search">
+      <summary aria-label="Open dashboard search">
+        <span>⌕</span>
+        <span>Search customers, bookings, quotes, reports...</span>
+        <kbd>⌘K</kbd>
+      </summary>
+      <div className="dashboard-search-panel">
+        <form action="/app/search" method="get">
+          <input name="q" autoComplete="off" placeholder="Search Jarvixx..." />
+          <button type="submit">Search</button>
+        </form>
+        <div>
+          {searchTargets.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
+        </div>
+      </div>
+    </details>
+  );
 }
 
 function KpiCard(props: { label: string; value: string; detail: string; delta: string; href: string; icon: string; tone: string }) {
@@ -105,7 +150,6 @@ function MiniLineChart() {
         <path d="M20 104 C80 76 105 61 150 64 C205 65 223 48 268 43 C320 36 345 44 392 31 C438 22 470 29 500 18 L500 126 L20 126 Z" fill="url(#revenueFill)" />
         <path d="M20 104 C80 76 105 61 150 64 C205 65 223 48 268 43 C320 36 345 44 392 31 C438 22 470 29 500 18" fill="none" stroke="#c99c35" strokeWidth="3" />
         <path d="M20 112 C80 89 116 82 156 86 C206 91 225 69 270 70 C320 69 346 58 392 57 C438 72 466 53 500 49" fill="none" stroke="#d7a747" strokeDasharray="5 5" strokeWidth="2" />
-        {[20, 100, 180, 260, 340, 420, 500].map((x) => <circle key={x} cx={x} cy={x === 20 ? 104 : x === 100 ? 68 : x === 180 ? 61 : x === 260 ? 44 : x === 340 ? 42 : x === 420 ? 27 : 18} r="4" fill="#c99c35" />)}
       </svg>
       <div style={{ display: 'flex', justifyContent: 'space-around', color: '#6d655a', fontSize: 12 }}>
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => <span key={day}>{day}</span>)}
@@ -116,7 +160,7 @@ function MiniLineChart() {
 
 function GrowthDonut(props: { total: string }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '132px 1fr', gap: 14, alignItems: 'center', minHeight: 148 }}>
+    <div className="dashboard-growth-donut" style={{ display: 'grid', gridTemplateColumns: '132px 1fr', gap: 14, alignItems: 'center', minHeight: 148 }}>
       <div style={{ position: 'relative', width: 124, height: 124, borderRadius: '50%', background: 'conic-gradient(#64c7a1 0 49%, #7ea5e8 49% 73%, #8a66d6 73% 89%, #c59a35 89% 100%)' }}>
         <div style={{ position: 'absolute', inset: 25, borderRadius: '50%', background: '#fff', display: 'grid', placeItems: 'center', textAlign: 'center' }}>
           <span style={{ color: '#6d655a', fontSize: 12 }}>Total<br /><strong style={{ color: '#17130d', fontSize: 23 }}>{props.total}</strong><br />Leads</span>
@@ -161,7 +205,6 @@ export default function DashboardCommandCenter(props: { data: DashboardData }) {
   const activeQuotes = findKpi(data, 'Active quotes')?.value || '0';
   const paidTodayValue = findMetric(data.revenueMetrics, 'Paid today')?.value || revenueToday;
   const paidToday = paidTodayValue === 'Restricted' ? '$0.00' : paidTodayValue;
-  const connectedCount = data.sourceStates.filter((source) => source.connected).length;
 
   const kpis = [
     { label: "Today's Bookings", value: todayBookings?.value || '0', detail: 'vs yesterday', delta: todayBookings?.empty ? '0%' : '+', href: todayBookings?.href || '/app/bookings?date=today', icon: '□', tone: iconTones[0] },
@@ -181,17 +224,16 @@ export default function DashboardCommandCenter(props: { data: DashboardData }) {
   ];
 
   return (
-    <main style={{ minHeight: '100vh', background: '#fbfaf7', padding: 16, color: '#12100c' }}>
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 540px 320px', gap: 16, alignItems: 'start', marginBottom: 12 }}>
-        <div style={{ paddingTop: 20 }}>
-          <h1 style={{ margin: '0 0 7px', fontSize: 28, lineHeight: 1.05 }}>Good afternoon, Camili Pro <span style={{ fontSize: 22 }}>👋</span></h1>
-          <p style={{ margin: 0, color: '#6d655a', fontSize: 15 }}>Welcome back to your Executive Command Center.</p>
+    <main className="dashboard-command-center" style={{ minHeight: '100vh', background: '#fbfaf7', padding: 16, color: '#12100c' }}>
+      <section className="dashboard-topbar">
+        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingTop: 18 }}>
+          <DashboardMenu />
+          <div>
+            <h1 style={{ margin: '0 0 7px', fontSize: 28, lineHeight: 1.05 }}>Good afternoon, Camili Pro <span style={{ fontSize: 22 }}>👋</span></h1>
+            <p style={{ margin: 0, color: '#6d655a', fontSize: 15 }}>Welcome back to your Executive Command Center.</p>
+          </div>
         </div>
-        <div style={{ ...card, height: 42, display: 'flex', alignItems: 'center', gap: 12, padding: '0 16px', color: '#6d655a', alignSelf: 'start' }}>
-          <span>⌕</span>
-          <span style={{ flex: 1, fontSize: 14 }}>Search customers, bookings, quotes, reports...</span>
-          <span style={{ background: '#f4f1ec', borderRadius: 8, padding: '4px 8px', fontSize: 12 }}>⌘K</span>
-        </div>
+        <DashboardSearch />
         <div style={{ display: 'grid', gap: 10, justifyItems: 'end' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
             <span style={{ position: 'relative', fontSize: 20 }}>♙<b style={{ position: 'absolute', top: -12, right: -10, width: 18, height: 18, borderRadius: 999, background: '#d8bd7f', display: 'grid', placeItems: 'center', fontSize: 10 }}>0</b></span>
@@ -200,23 +242,21 @@ export default function DashboardCommandCenter(props: { data: DashboardData }) {
             <span><strong style={{ display: 'block' }}>Camili Pro</strong><span style={{ color: '#6d655a', fontSize: 12 }}>Administrator</span></span>
             <span>⌄</span>
           </div>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <a href="/app/bookings/new" style={{ borderRadius: 10, background: 'linear-gradient(180deg,#d8bd7f,#b58b32)', color: '#17130d', minWidth: 132, height: 44, display: 'grid', placeItems: 'center', fontWeight: 700 }}>＋ New⌄</a>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <a href="/app/bookings/new" style={{ borderRadius: 10, background: 'linear-gradient(180deg,#d8bd7f,#b58b32)', color: '#17130d', minWidth: 132, height: 44, display: 'grid', placeItems: 'center', fontWeight: 700 }}>+ New</a>
             <span style={{ ...card, height: 36, padding: '0 14px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>□ Today: {data.dateLabel}</span>
           </div>
         </div>
       </section>
 
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 10, marginBottom: 10 }}>
-        {kpis.map((item, index) => <KpiCard key={item.label} {...item} tone={item.tone || iconTones[index]} />)}
+      <section className="dashboard-kpi-grid">
+        {kpis.map((item) => <KpiCard key={item.label} {...item} />)}
       </section>
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1.05fr 1.1fr 1.05fr', gap: 10, marginBottom: 10 }}>
+      <section className="dashboard-main-grid">
         <article style={{ ...card, padding: 12 }}>
           <h2 style={{ margin: '0 0 8px', fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Today's Operations Priorities</h2>
-          <div style={{ display: 'grid', gap: 0 }}>
-            {priorityRows.map((row) => <PriorityRow key={row.title} {...row} />)}
-          </div>
+          <div style={{ display: 'grid', gap: 0 }}>{priorityRows.map((row) => <PriorityRow key={row.title} {...row} />)}</div>
           <a href={firstAction(data.alerts, '/app/dispatch')} style={{ marginTop: 8, height: 32, border: '1px solid #eadfce', borderRadius: 9, display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 13 }}>View All Priorities ›</a>
         </article>
 
@@ -225,7 +265,7 @@ export default function DashboardCommandCenter(props: { data: DashboardData }) {
             <h2 style={{ margin: 0, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Today's Operations Board</h2>
             <span style={{ border: '1px solid rgba(216,189,127,0.45)', borderRadius: 999, padding: '3px 9px', color: '#dff3e5', fontSize: 12 }}>● Live</span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 5 }}>
+          <div className="dashboard-operation-grid">
             <OperationStat label="Arrivals" value={todayBookings?.value || '0'} body="On the way" />
             <OperationStat label="On the way" value={staffClock.split('/')[0] || '0'} body="Providers traveling" />
             <OperationStat label="Running late" value={lateJobs} body="Require attention" />
@@ -238,7 +278,7 @@ export default function DashboardCommandCenter(props: { data: DashboardData }) {
 
         <article style={{ ...card, padding: 12 }}>
           <h2 style={{ margin: '0 0 8px', fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Quick Actions</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+          <div className="dashboard-action-grid">
             <QuickAction label="New Booking" href="/app/bookings/new" icon="□" />
             <QuickAction label="New Customer" href="/app/customers?action=new" icon="♙+" />
             <QuickAction label="Create Quote" href="/app/quotes?action=new" icon="▱+" />
@@ -250,7 +290,7 @@ export default function DashboardCommandCenter(props: { data: DashboardData }) {
         </article>
       </section>
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1.15fr 1.08fr', gap: 10, marginBottom: 12 }}>
+      <section className="dashboard-main-grid dashboard-lower-grid">
         <article style={{ ...card, padding: 12 }}>
           <h2 style={{ margin: '0 0 8px', fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Executive Activity Feed</h2>
           {data.alerts.length ? data.alerts.slice(0, 4).map((alert, index) => (
@@ -287,7 +327,7 @@ export default function DashboardCommandCenter(props: { data: DashboardData }) {
         </article>
       </section>
 
-      <section style={{ borderRadius: 16, background: 'linear-gradient(135deg,#080808,#171717)', color: '#fff', padding: 12, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr auto', gap: 12, alignItems: 'center' }}>
+      <section className="dashboard-health-grid">
         {[
           ['●', 'System Status', data.tenantReady ? 'All Systems Operational' : 'Tenant Context Needed'],
           ['▰', 'Database', data.connectionStatus.state === 'connected' ? 'Connected' : data.connectionStatus.state.replace('-', ' ')],
